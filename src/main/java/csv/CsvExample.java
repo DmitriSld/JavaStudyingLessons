@@ -38,7 +38,6 @@ public class CsvExample {
     private void writeToCsv(List<Person> people) {
 
 
-        File file;
         try (FileWriter fileWriter = new FileWriter(OUT_FILE);
              CSVPrinter csvPrinter = new CSVPrinter(fileWriter, csvFormat);
         ) {
@@ -64,13 +63,11 @@ public class CsvExample {
 
         List<Person> personList = new ArrayList<>();
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-dd");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try (BufferedReader reader
                      = new BufferedReader(new InputStreamReader(new FileInputStream(INPUT_FILE), StandardCharsets.UTF_8));
              CSVParser csvParser = new CSVParser(reader, csvFormat)) {
-            Iterator<CSVRecord> csvIterator = csvParser.iterator();
-            while (csvIterator.hasNext()) {
-                CSVRecord record = csvIterator.next();
+            for (CSVRecord record : csvParser) {
                 Person person = new Person(Integer.parseInt(record.get(PersonField.NUMBER.ordinal())),
                         record.get(PersonField.SURNAME.ordinal()),
                         record.get(PersonField.NAME.ordinal()),
