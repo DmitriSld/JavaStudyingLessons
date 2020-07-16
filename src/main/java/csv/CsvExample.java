@@ -28,8 +28,8 @@ public class CsvExample implements Comparator<Person> {
         CsvExample csvExample = new CsvExample();
         List<Person> personList = csvExample.readCsvToListPerson();
         //csvExample.writeToCsv(personList);
-        //csvExample.sortPersonsList(personList);
-        csvExample.groupPersonList(personList);
+        csvExample.sortPersonsList(personList);
+        //csvExample.groupPersonList(personList);
         csvExample.writeToCsv(personList);
     }
 
