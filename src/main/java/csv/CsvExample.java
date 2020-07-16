@@ -11,10 +11,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class CsvExample implements Comparator<Person> {
     final CSVFormat csvFormat = CSVFormat.DEFAULT
@@ -27,9 +24,9 @@ public class CsvExample implements Comparator<Person> {
     public static void main(String[] args) {
         CsvExample csvExample = new CsvExample();
         List<Person> personList = csvExample.readCsvToListPerson();
-        //csvExample.writeToCsv(personList);
-        csvExample.sortPersonsList(personList);
-        //csvExample.groupPersonList(personList);
+        //csvExample.writeToCsv(personList); //Обычный вывод в файл
+        //csvExample.sortPersonsList(personList); //Сортировка
+        csvExample.groupPersonList(personList); //Группировка
         csvExample.writeToCsv(personList);
     }
 
@@ -39,16 +36,47 @@ public class CsvExample implements Comparator<Person> {
         System.out.println(sortList.toString());
     }
 
+
     private void groupPersonList(List<Person> groupList) {
-//        List<String> stringPersonList = new ArrayList<>();
+        List<Person> list = new ArrayList<>(new HashSet<>(groupList));
+        System.out.println(list.toString());
+    }
+
+//    private void groupPersonList(List<Person> groupList) {
+//        //System.out.println(groupList.toString());
+//        LinkedHashSet<Person> personLinkedHashSet = new LinkedHashSet<>();
+//        Iterator<Person> iter = groupList.iterator();
+//        for (Person person : groupList) {
+//            while (iter.hasNext()) {
+//                Person numPerson = iter.next();
+//                if (person.getName().compareTo(numPerson.getName())) {
+//                    personLinkedHashSet.add(numPerson);
+//                }
+//            }
+//        }
+//        System.out.println(personLinkedHashSet.toString());
+//    }
+
+
+//    private void groupPersonList(List<Person> groupList) {
+//        List<String> resultGroupList = new ArrayList<>();
+//        Iterator<Person> iter = groupList.iterator();
+//         while (iter.hasNext()) {
+//             if(groupList.contains(iter)) {
+//                 iter.next();
+//             } else {
+//                 resultGroupList.add(iter.toString());
+//             }
+//         }
+//        System.out.println(resultGroupList.toString());
+//    }
+
 //        for (Person personToList: groupList) {
 //            stringPersonList.add(String.valueOf(personToList));
 //        }
 //        List<String> list = new ArrayList<>(new LinkedHashSet<>(stringPersonList));
 //        System.out.println(list.toString());
 //    }
-
-    }
 
 
     //    private void sortPersonsList (List<Person> sortList){ //По одному полю (number)

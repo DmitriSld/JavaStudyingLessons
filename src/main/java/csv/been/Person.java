@@ -65,16 +65,16 @@ public class Person implements Comparable<Person> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Person preson = (Person) o;
-        return number == preson.number &&
+        return //number == preson.number &&
                 Objects.equals(name, preson.name) &&
-                Objects.equals(surName, preson.surName) &&
-                Objects.equals(patronymic, preson.patronymic) &&
-                Objects.equals(birthDate, preson.birthDate);
+                        Objects.equals(surName, preson.surName) &&
+                        Objects.equals(patronymic, preson.patronymic) &&
+                        Objects.equals(birthDate, preson.birthDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(number, name, surName, birthDate, patronymic);
+        return Objects.hash(name, surName, birthDate, patronymic);
     }
 
     @Override
