@@ -3,7 +3,7 @@ package csv.been;
 import java.util.Date;
 import java.util.Objects;
 
-public class Person {
+public class Person implements Comparable<Person> {
     private int number;
     private String name;
     private String surName;
@@ -86,5 +86,10 @@ public class Person {
                 ", patronymic='" + patronymic + '\'' +
                 ", lastLogin=" + birthDate +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Person o) {
+        return (this.number - o.number);
     }
 }

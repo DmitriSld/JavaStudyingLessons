@@ -12,10 +12,11 @@ import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-public class CsvExample {
+public class CsvExample implements Comparator<Person> {
     final CSVFormat csvFormat = CSVFormat.DEFAULT
             .withDelimiter(';')
             .withRecordSeparator("\r\n");
@@ -26,28 +27,72 @@ public class CsvExample {
     public static void main(String[] args) {
         CsvExample csvExample = new CsvExample();
         List<Person> personList = csvExample.readCsvToListPerson();
+        //csvExample.writeToCsv(personList);
+        //csvExample.sortPersonsList(personList);
+        csvExample.groupPersonList(personList);
         csvExample.writeToCsv(personList);
-        csvExample.sortPersonList(personList);
-        //System.out.println(personList);
     }
+
+
+    private void sortPersonsList(List<Person> sortList) {
+        Collections.sort(sortList, new CsvExample());
+        System.out.println(sortList.toString());
+    }
+
+    private void groupPersonList(List<Person> groupList) {
+//        List<String> stringPersonList = new ArrayList<>();
+//        for (Person personToList: groupList) {
+//            stringPersonList.add(String.valueOf(personToList));
+//        }
+//        List<String> list = new ArrayList<>(new LinkedHashSet<>(stringPersonList));
+//        System.out.println(list.toString());
+//    }
+
+    }
+
+
+    //    private void sortPersonsList (List<Person> sortList){ //По одному полю (number)
+//        Collections.sort(sortList);
+//        System.out.println(sortList.toString());
+//    }
 
 
     //recordToSort.add(String.valueOf(sortPerson.getNumber()).compareTo(String.valueOf(sortPerson.getNumber())));
-    private void sortPersonList(List<Person> sortList) {
-        List<String> recordToSort = new ArrayList<>();
-        for (Person sortPerson : sortList) {
-            Iterator<Person> iter = sortList.iterator();
-            while (iter.hasNext()) {
-                if (sortPerson.getName().compareTo(iter.next().getName()) == 1) {
-                    System.out.println("da");
-                } else {
-                    System.out.println("net");
-                }
-                //System.out.println(sortPerson);
-            }
-        }
-    }
+//    private void sortPersonList(List<Person> sortList) {
+//        List<String> recordToSort = new ArrayList<>();
+//        for (Person sortPerson : sortList) {
+//            Iterator<Person> iter = sortList.iterator();
+//            while (iter.hasNext()) {
+//                if (sortPerson.getName().compareTo(iter.next().getName()) == 0) {
+//                    recordToSort.add(sortPerson.getName());
+//                } else {
+//                    break;
+//                }
+//            }
+//        }
+//        System.out.println(recordToSort);
+//    }
 
+//    private void sortPersonList(List<Person> sortList) {
+//        List<String> recordToSort = new ArrayList<>();
+//        for (Person sortPerson : sortList) {
+//            recordToSort.add(String.valueOf(sortPerson));
+//            Collections.sort(recordToSort);
+//        }
+//        //System.out.println(recordToSort);
+//    }
+
+
+//    private List<Person> sortPersonsList (List<Person> sortList) {
+//        List<String> recordToSort = new ArrayList<>();
+//        Collections.sort(sortList, new Comparator<Person>() {
+//            @Override
+//            public int compare(Person o1, Person o2) {
+//                return 0;
+//            }
+//        });
+//        return sortList;
+//    }
 
     private void writeToCsv(List<Person> people) {
         try (FileWriter fileWriter = new FileWriter(OUT_FILE);
@@ -87,6 +132,15 @@ public class CsvExample {
             e.printStackTrace();
         }
         return personList;
+    }
+
+    @Override
+    public int compare(Person o1, Person o2) {
+        int flag = o1.getNumber() - o2.getNumber();
+        if (flag == 0) {
+            o1.getName().compareTo(o2.getName());
+        }
+        return flag;
     }
 }
 
