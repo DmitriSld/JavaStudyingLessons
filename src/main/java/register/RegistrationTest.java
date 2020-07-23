@@ -87,6 +87,8 @@ public class RegistrationTest {
     private void registerPerson() {
         ArrayList<String> listPerson = new ArrayList<>();
         String regALph = "[а-яёА-ЯЁ]+";
+        String regEng = "[a-zA-Z]";
+        String regPas = "[a-zA-Z0-9]";
         Pattern pattern = Pattern.compile(regALph);
         System.out.println("Введите Ваше имя:");
         Scanner scanner = new Scanner(System.in);
@@ -97,14 +99,40 @@ public class RegistrationTest {
 
 
         if (m.find()) {
+
             if (registerName.substring(0, 1).matches("[А-ЯЁ]")) {
                 System.out.println("Введите Вашу фамилию:");
                 String registerSurName = scanner.nextLine();
                 m = pattern.matcher(registerSurName);
+
                 if (m.find()) {
+
                     if (registerSurName.substring(0, 1).matches("[А-ЯЁ]")) {
-                        listPerson.add(registerName);
-                        listPerson.add(registerSurName);
+                        System.out.println("Введите адрес электронной почты:");
+                        pattern = Pattern.compile(regEng);
+                        String registerEmail = scanner.nextLine();
+                        m = pattern.matcher(registerEmail);
+
+                        if (m.find()) {
+
+                            System.out.println("Введите пароль:");
+                            pattern = Pattern.compile(regPas);
+                            String registerPassword = scanner.nextLine();
+                            m = pattern.matcher(registerPassword);
+
+                            if (m.find()) {
+
+                                listPerson.add(registerName);
+                                listPerson.add(registerSurName);
+                                listPerson.add(registerEmail);
+                                listPerson.add(registerPassword);
+                            } else {
+                                System.out.println("Пароль не соответствует требованиям безопасности");
+                            }
+
+                        } else {
+                            System.out.println("Электронный адрес введен некорректно");
+                        }
                     } else {
                         System.out.println("Фамилия должна начинаться с заглавной буквы");
                     }
