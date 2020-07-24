@@ -178,9 +178,12 @@ public class RegistrationTest {
                 try (Connection connection = DriverManager.getConnection("jdbc:sqlserver://localhost:1434;database=education_r09",
                         "sa", "Q1w2e3r4t%")) {
                     Statement statement = connection.createStatement();
+                    statement.executeUpdate("INSERT INTO education_r09.dbo.registrationPersonInDB(name, surName, email, login, password)" +
+                            " VALUES ('1', '1', '1', '1', '1')");
+
 //                    statement.executeUpdate("INSERT registrationPersonInDB (name, surName, email, login, password) " +
 //                            "VALUES");
-                    statement.executeUpdate("INSERT registrationPersonInDB(name, surname, email, login, password) VALUES");
+                    //statement.executeUpdate("INSERT INTO registrationPersonInDB(name, surname, email, login, password) VALUES ()");
 
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());
