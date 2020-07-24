@@ -1,6 +1,9 @@
 package register;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -10,12 +13,12 @@ public class RegistrationTest {
     final String REG_ALPH = "[а-яёА-ЯЁ]+";
     final String REG_ENG = "[a-zA-Z]";
     final String REG_PAS = "[a-zA-Z0-9]";
-    final String SQL_CREATE_TABLE = "CREATE TABLE registrationPersonInDB " + "name VARCHAR(100), " + "surName VARCHAR(100), "
-            + "email VARCHAR(100), " + "login VARCHAR(100), " + "password VARCHAR(100)";
+//    final String SQL_CREATE_TABLE = "CREATE TABLE registrationPersonInDB(" + "id INT NOT NULL AUTO_INCREMENT, "
+//            + "name VARCHAR(100), " + "surName VARCHAR(100), " + "email VARCHAR(100), " + "login VARCHAR(100), "
+//            + "password VARCHAR(100))";
 
 
     public static void main(String[] args) {
-        //Scanner scanner = new Scanner(System.in);
         RegistrationTest registrationTest = new RegistrationTest();
         registrationTest.registerPerson();
 
@@ -94,6 +97,7 @@ public class RegistrationTest {
         ArrayList<String> listPerson = new ArrayList<>();
         int flag = 0;
         Pattern pattern = Pattern.compile(REG_ALPH);
+        System.out.println("Регистрация пользователя...");
         System.out.println("Введите Ваше имя:");
         Scanner scanner = new Scanner(System.in);
 
@@ -138,13 +142,6 @@ public class RegistrationTest {
                                     listPerson.add(registerLogin);
                                     listPerson.add(registerPassword);
 
-                                    RegistrationPerson registrationPerson = new RegistrationPerson(listPerson.get
-                                            (RegisterFields.NAME.ordinal()),
-                                            listPerson.get(RegisterFields.SURNAME.ordinal()), listPerson.get
-                                            (RegisterFields.EMAIL.ordinal()),
-                                            listPerson.get(RegisterFields.LOGIN.ordinal()), listPerson.get
-                                            (RegisterFields.PASSWORD.ordinal()));
-
 
                                 } else {
                                     System.out.println("Пароль не соответствует требованиям безопасности");
@@ -172,27 +169,26 @@ public class RegistrationTest {
 
 
         if (flag == 1) {
+            RegistrationPerson registrationPerson = new RegistrationPerson(listPerson.get(RegisterFields.NAME.ordinal()),
+                    listPerson.get(RegisterFields.SURNAME.ordinal()), listPerson.get(RegisterFields.EMAIL.ordinal()),
+                    listPerson.get(RegisterFields.LOGIN.ordinal()), listPerson.get(RegisterFields.PASSWORD.ordinal()));
+            //System.out.println(registrationPerson.toString());
             try {
                 Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-                try {
-                    Connection connection = DriverManager.getConnection("jdbc:sqlserver://localhost:1434;database=education_r09",
-                            "sa", "Q1w2e3r4t%");
-                    PreparedStatement preparedStatement = connection.prepareStatement("SELECT TOP 10 * FROM WM_PERSONAL_CARD");
-                    ResultSet resultSet = preparedStatement.executeQuery();
-                    System.out.println(resultSet);
+                try (Connection connection = DriverManager.getConnection("jdbc:sqlserver://localhost:1434;database=education_r09",
+                        "sa", "Q1w2e3r4t%")) {
+                    Statement statement = connection.createStatement();
+//                    statement.executeUpdate("INSERT registrationPersonInDB (name, surName, email, login, password) " +
+//                            "VALUES");
+                    statement.executeUpdate("INSERT registrationPersonInDB(name, surname, email, login, password) VALUES");
+
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());
                 }
-            } catch (ClassNotFoundException e) {
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
         }
-
-//        RegistrationPerson registrationPerson = new RegistrationPerson(listPerson.get(RegisterFields.NAME.ordinal()),
-//                listPerson.get(RegisterFields.SURNAME.ordinal()), listPerson.get(RegisterFields.EMAIL.ordinal()),
-//                listPerson.get(RegisterFields.LOGIN.ordinal()), listPerson.get(RegisterFields.PASSWORD.ordinal()));
-
-        //System.out.println(registrationPerson.toString());
-
     }
 }
+
